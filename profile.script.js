@@ -1,6 +1,7 @@
 // --- กรุณาใส่ค่าของคุณที่นี่ ---
-const GAS_URL = 'ใส่_URL_ของเว็บแอป_ที่คุณได้จากบทที่_4_ที่นี่';
-const LIFF_ID = 'ใส่_LIFF_ID_ใหม่_สำหรับหน้าโปรไฟล์_ที่นี่';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbycL45fzEDgzbN_d1Cb5DxFgZW8crVqImQpSPl0ZM-O73-_wqVuAJFkMLfXeD-QK1DL/exec
+';
+const LIFF_ID = '2007730528-rw7ewjK7';
 
 // --- DOM Elements ---
 const displayName = document.getElementById('display-name');
