@@ -18,6 +18,23 @@
                 <select id="month-select"></select>
                 <select id="year-select"></select>
             </div>
+
+            <!-- ส่วนสรุปข้อมูล (เพิ่มใหม่) -->
+            <div id="summary-stats" class="summary-stats">
+                <div class="stat-item on-time-bg">
+                    <span class="stat-label">ตรงเวลา</span>
+                    <span id="on-time-count" class="stat-value">0</span>
+                </div>
+                <div class="stat-item late-bg">
+                    <span class="stat-label">มาสาย</span>
+                    <span id="late-count" class="stat-value">0</span>
+                </div>
+                <div class="stat-item absent-bg">
+                    <span class="stat-label">ขาดงาน</span>
+                    <span id="absent-count" class="stat-value">0</span>
+                </div>
+            </div>
+
             <div id="calendar-container">
                 <div class="calendar-header">
                     <div>อา.</div>
@@ -33,6 +50,8 @@
                 </div>
                 <div class="loader" id="loader"></div>
             </div>
+            
+            <!-- คำอธิบายสัญลักษณ์ (แก้ไข) -->
             <div class="legend">
                 <div class="legend-item"><span class="legend-color on-time"></span> ตรงเวลา</div>
                 <div class="legend-item"><span class="legend-color late"></span> มาสาย</div>
@@ -47,3 +66,4 @@
     <script src="profile.script.js"></script>
 </body>
 </html>
+
