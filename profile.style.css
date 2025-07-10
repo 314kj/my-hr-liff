@@ -53,6 +53,39 @@ body {
     background-color: white;
 }
 
+/* Summary Stats Styles (เพิ่มใหม่) */
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.on-time-bg { background-color: #28a745; }
+.late-bg { background-color: #dc3545; }
+.absent-bg { background-color: #6c757d; }
+
+
 /* Calendar Styles */
 #calendar-container {
     background-color: white;
@@ -89,7 +122,7 @@ body {
     font-weight: bold;
 }
 
-/* Status Colors */
+/* Status Colors for Calendar Days */
 .day.on-time { background-color: #28a745; } /* Green */
 .day.late { background-color: #dc3545; } /* Red */
 .day.absent { background-color: #6c757d; } /* Gray */
@@ -117,6 +150,11 @@ body {
     display: inline-block;
 }
 
+/* Status Colors for Legend (แก้ไข) */
+.legend-color.on-time { background-color: #28a745; }
+.legend-color.late { background-color: #dc3545; }
+.legend-color.absent { background-color: #6c757d; }
+
 /* Loader */
 .loader {
     position: absolute;
@@ -136,3 +174,4 @@ body {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
