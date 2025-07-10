@@ -13,31 +13,39 @@ const loader = document.getElementById('loader');
 
 let USER_ID = null;
 
-// --- Main Function ---
+// --- Main Function (with Debugging) ---
 window.onload = async function() {
+    console.log("หน้าเว็บโหลดเสร็จแล้ว เริ่มต้น LIFF...");
+    console.log("LIFF ID ที่ใช้:", LIFF_ID); // แสดง ID ที่เราใส่ไป
     try {
         await liff.init({ liffId: LIFF_ID });
+        console.log("liff.init() สำเร็จ!"); // ถ้าเห็นบรรทัดนี้ แสดงว่า LIFF ID ถูกต้อง
+
         if (!liff.isLoggedIn()) {
+            console.log("ผู้ใช้ยังไม่ได้ล็อกอิน กำลังจะเรียก liff.login()");
             liff.login();
             return;
         }
-        
+
+        console.log("ผู้ใช้ล็อกอินแล้ว กำลังดึงโปรไฟล์...");
         const profile = await liff.getProfile();
+        console.log("ดึงโปรไฟล์สำเร็จ:", profile);
+
         USER_ID = profile.userId;
         displayName.textContent = profile.displayName;
         profilePicture.src = profile.pictureUrl;
 
         populateSelectors();
-        
-        // Add event listeners
+
         monthSelect.addEventListener('change', updateCalendar);
         yearSelect.addEventListener('change', updateCalendar);
 
-        updateCalendar(); // Initial load
+        updateCalendar();
 
     } catch (error) {
-        console.error(error);
-        displayName.textContent = "เกิดข้อผิดพลาด";
+        // ถ้าเกิดปัญหา มันจะเข้ามาทำงานในนี้
+        console.error("เกิดข้อผิดพลาดร้ายแรงที่ liff.init():", error);
+        displayName.textContent = "เกิดข้อผิดพลาดในการโหลด";
     }
 };
 
