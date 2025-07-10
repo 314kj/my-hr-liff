@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบลงเวลาทำงาน</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="profile" class="profile-card">
+            <img id="profile-picture" src="https://via.placeholder.com/80" alt="Profile Picture">
+            <p id="display-name">กำลังโหลดข้อมูล...</p>
+        </div>
 
+        <div id="main-action" class="action-card">
+            <h2 id="action-title">ลงเวลาทำงาน</h2>
+            <p id="status-message">กรุณากดปุ่มเพื่อบันทึกเวลา</p>
+            <button id="checkin-button" class="action-button">📍 ยืนยันตำแหน่งและเช็คอิน</button>
+        </div>
+
+        <div class="loader" id="loader" style="display: none;"></div>
+        <p class="footer">Powered by Your Company</p>
+    </div>
+
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
