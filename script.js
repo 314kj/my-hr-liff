@@ -1,5 +1,5 @@
 // --- กรุณาใส่ค่าของคุณที่นี่ ---
-const GAS_URL = 'ใส่_URL_ของเว็บแอป_ที่คุณได้จากบทที่_4_ที่นี่';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbycL45fzEDgzbN_d1Cb5DxFgZW8crVqImQpSPl0ZM-O73-_wqVuAJFkMLfXeD-QK1DL/exec';
 const LIFF_ID = 'ใส่_LIFF_ID_ที่คุณจะได้จากขั้นตอนถัดไป_ที่นี่';
 
 // --- ตัวแปรสำหรับ DOM Elements ---
