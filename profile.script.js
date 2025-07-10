@@ -9,42 +9,37 @@ const monthSelect = document.getElementById('month-select');
 const yearSelect = document.getElementById('year-select');
 const calendarGrid = document.getElementById('calendar-grid');
 const loader = document.getElementById('loader');
+const onTimeCountEl = document.getElementById('on-time-count');
+const lateCountEl = document.getElementById('late-count');
+const absentCountEl = document.getElementById('absent-count');
 
 let USER_ID = null;
 
-// --- Main Function (with Debugging) ---
+// --- Main Function ---
 window.onload = async function() {
-    console.log("หน้าเว็บโหลดเสร็จแล้ว เริ่มต้น LIFF...");
-    console.log("LIFF ID ที่ใช้:", LIFF_ID); // แสดง ID ที่เราใส่ไป
     try {
         await liff.init({ liffId: LIFF_ID });
-        console.log("liff.init() สำเร็จ!"); // ถ้าเห็นบรรทัดนี้ แสดงว่า LIFF ID ถูกต้อง
-
         if (!liff.isLoggedIn()) {
-            console.log("ผู้ใช้ยังไม่ได้ล็อกอิน กำลังจะเรียก liff.login()");
             liff.login();
             return;
         }
-
-        console.log("ผู้ใช้ล็อกอินแล้ว กำลังดึงโปรไฟล์...");
+        
         const profile = await liff.getProfile();
-        console.log("ดึงโปรไฟล์สำเร็จ:", profile);
-
         USER_ID = profile.userId;
         displayName.textContent = profile.displayName;
         profilePicture.src = profile.pictureUrl;
 
         populateSelectors();
-
+        
+        // Add event listeners
         monthSelect.addEventListener('change', updateCalendar);
         yearSelect.addEventListener('change', updateCalendar);
 
-        updateCalendar();
+        updateCalendar(); // Initial load
 
     } catch (error) {
-        // ถ้าเกิดปัญหา มันจะเข้ามาทำงานในนี้
-        console.error("เกิดข้อผิดพลาดร้ายแรงที่ liff.init():", error);
-        displayName.textContent = "เกิดข้อผิดพลาดในการโหลด";
+        console.error(error);
+        displayName.textContent = "เกิดข้อผิดพลาด";
     }
 };
 
@@ -106,6 +101,10 @@ function generateCalendar(year, month) {
 
 async function fetchAndDrawData(year, month) {
     loader.style.display = 'block';
+    // Reset counts
+    onTimeCountEl.textContent = 0;
+    lateCountEl.textContent = 0;
+    absentCountEl.textContent = 0;
 
     try {
         const url = `${GAS_URL}?func=getAttendanceData&userId=${USER_ID}&year=${year}&month=${month}`;
@@ -113,7 +112,12 @@ async function fetchAndDrawData(year, month) {
         const result = await response.json();
 
         if (result.status === 'success') {
-            const attendanceData = result.data; // e.g., { 10: 'Late', 11: 'On-Time' }
+            const attendanceData = result.data;
+            
+            // Initialize counters (เพิ่มใหม่)
+            let onTimeCount = 0;
+            let lateCount = 0;
+
             for (const day in attendanceData) {
                 const status = attendanceData[day];
                 const dayCell = document.getElementById(`day-${day}`);
@@ -121,11 +125,19 @@ async function fetchAndDrawData(year, month) {
                     dayCell.classList.add('has-data');
                     if (status === 'On-Time') {
                         dayCell.classList.add('on-time');
+                        onTimeCount++; // นับ
                     } else if (status === 'Late') {
                         dayCell.classList.add('late');
+                        lateCount++; // นับ
                     }
                 }
             }
+            
+            // Update summary stats in the UI (เพิ่มใหม่)
+            onTimeCountEl.textContent = onTimeCount;
+            lateCountEl.textContent = lateCount;
+            // absentCountEl will be 0 for now
+
         } else {
             throw new Error(result.message);
         }
