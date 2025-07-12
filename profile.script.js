@@ -1,7 +1,6 @@
     // --- กรุณาใส่ค่าของคุณที่นี่ ---
-    const GAS_URL = 'ใส่_URL_ของเว็บแอป_ของคุณที่นี่';
-    const LIFF_ID = 'ใส่_LIFF_ID_ของหน้าโปรไฟล์_ที่นี่';
-    
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbycL45fzEDgzbN_d1Cb5DxFgZW8crVqImQpSPl0ZM-O73-_wqVuAJFkMLfXeD-QK1DL/exec';
+    const LIFF_ID = '2007730528-rw7ewjK7';
     // --- DOM Elements ---
     const displayName = document.getElementById('display-name');
     const profilePicture = document.getElementById('profile-picture');
@@ -10,9 +9,11 @@
     const calendarGrid = document.getElementById('calendar-grid');
     const loader = document.getElementById('loader');
     // New summary elements
-    const lateMinutesSummary = document.getElementById('late-minutes-summary');
+    const onTimeDaysSummary = document.getElementById('on-time-days-summary');
+    const lateDaysSummary = document.getElementById('late-days-summary');
     const sickLeaveSummary = document.getElementById('sick-leave-summary');
     const annualLeaveSummary = document.getElementById('annual-leave-summary');
+    const personalLeaveSummary = document.getElementById('personal-leave-summary');
     
     let USER_ID = null;
     
@@ -80,7 +81,9 @@
         const daysInMonth = new Date(year, month, 0).getDate();
     
         for (let i = 0; i < firstDay; i++) {
-            calendarGrid.appendChild(document.createElement('div'));
+            const blankDay = document.createElement('div');
+            blankDay.classList.add('day');
+            calendarGrid.appendChild(blankDay);
         }
     
         for (let i = 1; i <= daysInMonth; i++) {
@@ -115,9 +118,11 @@
     
                 // Update summary data
                 const summaryData = result.summaryData;
-                lateMinutesSummary.textContent = summaryData.totalLateMinutes || 0;
+                onTimeDaysSummary.textContent = summaryData.onTimeDays || 0;
+                lateDaysSummary.textContent = summaryData.lateDays || 0;
                 sickLeaveSummary.textContent = summaryData.remainingSick || 0;
                 annualLeaveSummary.textContent = summaryData.remainingAnnual || 0;
+                personalLeaveSummary.textContent = summaryData.remainingPersonal || 0;
     
             } else {
                 throw new Error(result.message);
