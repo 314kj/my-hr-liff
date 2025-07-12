@@ -1,97 +1,65 @@
-// --- กรุณาใส่ค่าของคุณที่นี่ ---
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzElcYNmEjvbzJJoJuDx4IxDiW_3kowVZVf9vk1ZzRKk17TdDyZk0HdPXuIs9QvJLl5/exec';
 const LIFF_ID = '2007730528-NmMRX82M';
 
-// --- ตัวแปรสำหรับ DOM Elements ---
-const profilePicture = document.getElementById('profile-picture');
-const displayName = document.getElementById('display-name');
-const statusMessage = document.getElementById('status-message');
-const checkinButton = document.getElementById('checkin-button');
+const statusMessageEl = document.getElementById('status-message');
+const actionButton = document.getElementById('action-button');
 const loader = document.getElementById('loader');
+let liffContext = null;
 
-// --- ฟังก์ชันหลักที่ทำงานเมื่อหน้าเว็บโหลดเสร็จ ---
-window.onload = function() {
-    initializeLiff();
-};
-
-// --- ฟังก์ชันเริ่มต้นการทำงานของ LIFF ---
-async function initializeLiff() {
+async function main() {
     try {
+        statusMessageEl.textContent = "กำลังเริ่มต้นแอป...";
         await liff.init({ liffId: LIFF_ID });
         if (!liff.isLoggedIn()) {
             liff.login();
-        } else {
-            const profile = await liff.getProfile();
-            displayName.textContent = `สวัสดี, ${profile.displayName}`;
-            profilePicture.src = profile.pictureUrl;
-
-            // เพิ่ม Event Listener ให้กับปุ่มหลังจาก LIFF พร้อมใช้งาน
-            checkinButton.addEventListener('click', () => handleCheckin('IN'));
+            return;
         }
-    } catch (err) {
-        console.error(err);
-        statusMessage.textContent = 'เกิดข้อผิดพลาดในการเปิดแอป';
-        statusMessage.style.color = '#dc3545';
+        liffContext = liff.getContext();
+        const profile = await liff.getProfile();
+        document.getElementById('display-name').textContent = profile.displayName;
+        document.getElementById('profile-picture').src = profile.pictureUrl;
+        statusMessageEl.textContent = "คุณพร้อมที่จะลงเวลาแล้ว";
+        actionButton.textContent = "📍 กดเพื่อเช็คอิน / เช็คเอาท์";
+        actionButton.disabled = false;
+    } catch (error) {
+        handleError(error, 'เกิดข้อผิดพลาดในการเริ่มต้นแอป');
     }
 }
 
-// --- ฟังก์ชันจัดการการกดปุ่มเช็คอิน ---
-function handleCheckin(action) {
-    showLoading(true);
-    statusMessage.textContent = 'กำลังขอตำแหน่งที่ตั้ง...';
-    
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            // สำเร็จ: ได้รับตำแหน่งแล้ว
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            statusMessage.textContent = 'ได้รับตำแหน่งแล้ว กำลังส่งข้อมูล...';
-            sendDataToGas(liff.getContext().userId, lat, lon, action);
-        },
-        (error) => {
-            // ล้มเหลว: ไม่สามารถรับตำแหน่งได้
-            console.error(error);
-            statusMessage.textContent = 'ไม่สามารถเข้าถึงตำแหน่งได้ กรุณาเปิด GPS';
-            statusMessage.style.color = '#dc3545';
-            showLoading(false);
-        }
-    );
-}
-
-// --- ฟังก์ชันส่งข้อมูลไปยัง Google Apps Script ---
-async function sendDataToGas(userId, lat, lon, action) {
-    const url = `${GAS_URL}?userId=${userId}&lat=${lat}&lon=${lon}&action=${action}`;
-    
+actionButton.addEventListener('click', async () => {
+    actionButton.disabled = true;
+    loader.style.display = 'block';
+    statusMessageEl.textContent = 'กำลังขอตำแหน่งที่ตั้ง...';
     try {
+        const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 });
+        });
+        statusMessageEl.textContent = 'ได้รับตำแหน่งแล้ว กำลังส่งข้อมูล...';
+        const { latitude, longitude } = position.coords;
+        // For simplicity, we assume this button always triggers a check-in.
+        // A more complex app could check if the user has already checked in today.
+        const url = `${GAS_URL}?action=IN&userId=${liffContext.userId}&lat=${latitude}&lon=${longitude}`;
         const response = await fetch(url);
         const result = await response.json();
-        
         if (result.status === 'success') {
-            statusMessage.textContent = result.message;
-            statusMessage.style.color = '#28a745'; // สีเขียว
-            // ปิดหน้า LIFF หลังจากสำเร็จ 2 วินาที
-            setTimeout(() => {
-                liff.closeWindow();
-            }, 2000);
+            statusMessageEl.textContent = result.message;
+            setTimeout(() => liff.closeWindow(), 3000);
         } else {
             throw new Error(result.message);
         }
     } catch (error) {
-        console.error('Error sending data to GAS:', error);
-        statusMessage.textContent = `เกิดข้อผิดพลาด: ${error.message}`;
-        statusMessage.style.color = '#dc3545'; // สีแดง
+        handleError(error);
     } finally {
-        showLoading(false);
+        loader.style.display = 'none';
+        actionButton.disabled = false;
     }
+});
+
+function handleError(error, defaultMessage = 'เกิดข้อผิดพลาด') {
+    console.error(error);
+    statusMessageEl.textContent = error.message || defaultMessage;
+    actionButton.style.backgroundColor = '#dc3545';
+    actionButton.textContent = 'ผิดพลาด';
 }
 
-// --- ฟังก์ชันแสดง/ซ่อนตัวโหลด ---
-function showLoading(isLoading) {
-    if (isLoading) {
-        loader.style.display = 'block';
-        checkinButton.disabled = true;
-    } else {
-        loader.style.display = 'none';
-        checkinButton.disabled = false;
-    }
-}
+main();
