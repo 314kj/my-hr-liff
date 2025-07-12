@@ -1,0 +1,135 @@
+/* General Body Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 15px;
+    color: #333;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.page-header h1 {
+    font-size: 1.6em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Quota Section */
+.quota-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    text-align: center;
+}
+
+.quota-item {
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+}
+.quota-item.sick { background-color: #17a2b8; }
+.quota-item.annual { background-color: #007bff; }
+.quota-item.personal { background-color: #6f42c1; }
+
+.quota-label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.quota-value {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+/* Form Section */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box; /* Important */
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.date-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: white;
+    background-color: #06C755;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-button:disabled {
+    background-color: #b0b0b0;
+    cursor: not-allowed;
+}
+
+/* Loader */
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #06C755;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
