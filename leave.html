@@ -8,31 +8,16 @@
 </head>
 <body>
     <div class="container">
-        <header class="page-header">
-            <h1>ระบบยื่นเรื่อง / ดูวันลา</h1>
-        </header>
-
-        <!-- ส่วนแสดงโควต้า (แก้ไขใหม่ทั้งหมด) -->
+        <header class="page-header"><h1>ระบบยื่นเรื่อง / ดูวันลา</h1></header>
         <section id="quota-section" class="card">
             <h2>โควตาวันลาคงเหลือ (วัน)</h2>
             <div class="quota-grid">
-                <div class="quota-item sick">
-                    <span class="quota-label">ลาป่วย</span>
-                    <span id="sick-quota" class="quota-value">-</span>
-                </div>
-                <div class="quota-item personal">
-                    <span class="quota-label">ลากิจ</span>
-                    <span id="personal-quota" class="quota-value">-</span>
-                </div>
-                <div class="quota-item annual">
-                    <span class="quota-label">ลาพักร้อน</span>
-                    <span id="annual-quota" class="quota-value">-</span>
-                </div>
+                <div class="quota-item sick"><span class="quota-label">ลาป่วย</span><span id="sick-quota" class="quota-value">-</span></div>
+                <div class="quota-item personal"><span class="quota-label">ลากิจ</span><span id="personal-quota" class="quota-value">-</span></div>
+                <div class="quota-item annual"><span class="quota-label">ลาพักร้อน</span><span id="annual-quota" class="quota-value">-</span></div>
             </div>
             <div id="quota-loader" class="loader"></div>
         </section>
-
-        <!-- ส่วนฟอร์มยื่นใบลา (ไม่มีการเปลี่ยนแปลง) -->
         <section id="form-section" class="card">
             <h2>แบบฟอร์มยื่นใบลา</h2>
             <form id="leave-form">
@@ -45,7 +30,6 @@
                         <option value="ลาพักร้อน">ลาพักร้อน</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>ระยะเวลา</label>
                     <div class="radio-group">
@@ -53,40 +37,73 @@
                         <label><input type="radio" name="duration" value="ครึ่งวัน"> ครึ่งวัน</label>
                     </div>
                 </div>
-
                 <div class="form-group date-range">
-                    <div>
-                        <label for="start-date">วันเริ่มต้นลา</label>
-                        <input type="date" id="start-date" name="startDate" required>
-                    </div>
-                    <div>
-                        <label for="end-date">วันสิ้นสุดการลา</label>
-                        <input type="date" id="end-date" name="endDate" required>
-                    </div>
+                    <div><label for="start-date">วันเริ่มต้นลา</label><input type="date" id="start-date" name="startDate" required></div>
+                    <div><label for="end-date">วันสิ้นสุดการลา</label><input type="date" id="end-date" name="endDate" required></div>
                 </div>
-
-                <div class="form-group">
-                    <label for="reason">เหตุผลการลา</label>
-                    <textarea id="reason" name="reason" rows="3" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="telephone">เบอร์โทรศัพท์ติดต่อ</label>
-                    <input type="tel" id="telephone" name="telephone" placeholder="กรอกเบอร์โทรศัพท์ที่ติดต่อได้">
-                </div>
-
-                <div class="form-group">
-                    <label for="address">ที่อยู่ที่ติดต่อได้ระหว่างลา</label>
-                    <textarea id="address" name="address" rows="2"></textarea>
-                </div>
-
+                <div class="form-group"><label for="reason">เหตุผลการลา</label><textarea id="reason" name="reason" rows="3" required></textarea></div>
+                <div class="form-group"><label for="telephone">เบอร์โทรศัพท์ติดต่อ</label><input type="tel" id="telephone" name="telephone" placeholder="กรอกเบอร์โทรศัพท์ที่ติดต่อได้"></div>
+                <div class="form-group"><label for="address">ที่อยู่ที่ติดต่อได้ระหว่างลา</label><textarea id="address" name="address" rows="2"></textarea></div>
                 <button type="submit" id="submit-button" class="submit-button">ยื่นใบลา</button>
                 <div id="form-loader" class="loader" style="display: none;"></div>
             </form>
         </section>
-
     </div>
-
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="leave.script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบยื่นใบลางาน</title>
+    <link rel="stylesheet" href="leave.style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header"><h1>ระบบยื่นเรื่อง / ดูวันลา</h1></header>
+        <section id="quota-section" class="card">
+            <h2>โควตาวันลาคงเหลือ (วัน)</h2>
+            <div class="quota-grid">
+                <div class="quota-item sick"><span class="quota-label">ลาป่วย</span><span id="sick-quota" class="quota-value">-</span></div>
+                <div class="quota-item personal"><span class="quota-label">ลากิจ</span><span id="personal-quota" class="quota-value">-</span></div>
+                <div class="quota-item annual"><span class="quota-label">ลาพักร้อน</span><span id="annual-quota" class="quota-value">-</span></div>
+            </div>
+            <div id="quota-loader" class="loader"></div>
+        </section>
+        <section id="form-section" class="card">
+            <h2>แบบฟอร์มยื่นใบลา</h2>
+            <form id="leave-form">
+                <div class="form-group">
+                    <label for="leave-type">ประเภทการลา</label>
+                    <select id="leave-type" name="leaveType" required>
+                        <option value="">-- กรุณาเลือก --</option>
+                        <option value="ลาป่วย">ลาป่วย</option>
+                        <option value="ลากิจ">ลากิจ</option>
+                        <option value="ลาพักร้อน">ลาพักร้อน</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>ระยะเวลา</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="duration" value="เต็มวัน" checked> เต็มวัน</label>
+                        <label><input type="radio" name="duration" value="ครึ่งวัน"> ครึ่งวัน</label>
+                    </div>
+                </div>
+                <div class="form-group date-range">
+                    <div><label for="start-date">วันเริ่มต้นลา</label><input type="date" id="start-date" name="startDate" required></div>
+                    <div><label for="end-date">วันสิ้นสุดการลา</label><input type="date" id="end-date" name="endDate" required></div>
+                </div>
+                <div class="form-group"><label for="reason">เหตุผลการลา</label><textarea id="reason" name="reason" rows="3" required></textarea></div>
+                <div class="form-group"><label for="telephone">เบอร์โทรศัพท์ติดต่อ</label><input type="tel" id="telephone" name="telephone" placeholder="กรอกเบอร์โทรศัพท์ที่ติดต่อได้"></div>
+                <div class="form-group"><label for="address">ที่อยู่ที่ติดต่อได้ระหว่างลา</label><textarea id="address" name="address" rows="2"></textarea></div>
+                <button type="submit" id="submit-button" class="submit-button">ยื่นใบลา</button>
+                <div id="form-loader" class="loader" style="display: none;"></div>
+            </form>
+        </section>
+    </div>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script src="leave.script.js"></script>
 </body>
