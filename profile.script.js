@@ -1,15 +1,17 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzElcYNmEjvbzJJoJuDx4IxDiW_3kowVZVf9vk1ZzRKk17TdDyZk0HdPXuIs9QvJLl5/exec';
 const LIFF_ID = '2007730528-rw7ewjK7';
 
-const sickQuotaEl = document.getElementById('sick-quota');
-const personalQuotaEl = document.getElementById('personal-quota');
-const annualQuotaEl = document.getElementById('annual-quota');
-const quotaLoader = document.getElementById('quota-loader');
-const formLoader = document.getElementById('form-loader');
-const leaveForm = document.getElementById('leave-form');
-const submitButton = document.getElementById('submit-button');
-const startDateInput = document.getElementById('start-date');
-const endDateInput = document.getElementById('end-date');
+const displayName = document.getElementById('display-name');
+const profilePicture = document.getElementById('profile-picture');
+const monthSelect = document.getElementById('month-select');
+const yearSelect = document.getElementById('year-select');
+const calendarGrid = document.getElementById('calendar-grid');
+const loader = document.getElementById('loader');
+const onTimeDaysSummary = document.getElementById('on-time-days-summary');
+const lateDaysSummary = document.getElementById('late-days-summary');
+const sickLeaveSummary = document.getElementById('sick-leave-summary');
+const personalLeaveSummary = document.getElementById('personal-leave-summary');
+const annualLeaveSummary = document.getElementById('annual-leave-summary');
 
 let USER_ID = null;
 
@@ -22,73 +24,91 @@ window.onload = async function() {
         }
         const profile = await liff.getProfile();
         USER_ID = profile.userId;
-        fetchLeaveQuotas();
+        displayName.textContent = profile.displayName;
+        profilePicture.src = profile.pictureUrl;
+        populateSelectors();
+        monthSelect.addEventListener('change', updateCalendar);
+        yearSelect.addEventListener('change', updateCalendar);
+        updateCalendar();
     } catch (error) {
         console.error(error);
-        alert('เกิดข้อผิดพลาดในการเริ่มต้นแอป');
+        displayName.textContent = "เกิดข้อผิดพลาด";
     }
 };
 
-leaveForm.addEventListener('submit', handleFormSubmit);
-startDateInput.addEventListener('change', () => {
-    if (!endDateInput.value || endDateInput.value < startDateInput.value) {
-        endDateInput.value = startDateInput.value;
+function populateSelectors() {
+    const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    months.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = index + 1;
+        option.textContent = month;
+        monthSelect.appendChild(option);
+    });
+    monthSelect.value = currentMonth + 1;
+    for (let i = 0; i < 3; i++) {
+        const year = currentYear - i;
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = `ปี ${year + 543}`;
+        yearSelect.appendChild(option);
     }
-    endDateInput.min = startDateInput.value;
-});
+}
 
-async function fetchLeaveQuotas() {
-    quotaLoader.style.display = 'block';
+function updateCalendar() {
+    const year = yearSelect.value;
+    const month = monthSelect.value;
+    generateCalendar(year, month);
+    fetchAndDrawData(year, month);
+}
+
+function generateCalendar(year, month) {
+    calendarGrid.innerHTML = '';
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const daysInMonth = new Date(year, month, 0).getDate();
+    for (let i = 0; i < firstDay; i++) {
+        calendarGrid.appendChild(document.createElement('div'));
+    }
+    for (let i = 1; i <= daysInMonth; i++) {
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('day');
+        dayCell.id = `day-${i}`;
+        dayCell.textContent = i;
+        calendarGrid.appendChild(dayCell);
+    }
+}
+
+async function fetchAndDrawData(year, month) {
+    loader.style.display = 'block';
     try {
-        const url = `${GAS_URL}?func=getLeaveQuota&userId=${USER_ID}`;
+        const url = `${GAS_URL}?func=getAttendanceData&userId=${USER_ID}&year=${year}&month=${month}`;
         const response = await fetch(url);
         const result = await response.json();
         if (result.status === 'success') {
-            const quotas = result.data;
-            sickQuotaEl.textContent = quotas.sick || 0;
-            personalQuotaEl.textContent = quotas.personal || 0;
-            annualQuotaEl.textContent = quotas.annual || 0;
+            const calendarData = result.calendarData;
+            for (const day in calendarData) {
+                const status = calendarData[day];
+                const dayCell = document.getElementById(`day-${day}`);
+                if (dayCell) {
+                    dayCell.classList.add('has-data');
+                    if (status === 'On-Time') dayCell.classList.add('on-time');
+                    else if (status === 'Late') dayCell.classList.add('late');
+                }
+            }
+            const summaryData = result.summaryData;
+            onTimeDaysSummary.textContent = summaryData.onTimeDays || 0;
+            lateDaysSummary.textContent = summaryData.lateDays || 0;
+            sickLeaveSummary.textContent = summaryData.remainingSick || 0;
+            personalLeaveSummary.textContent = summaryData.remainingPersonal || 0;
+            annualLeaveSummary.textContent = summaryData.remainingAnnual || 0;
         } else {
             throw new Error(result.message);
         }
     } catch (error) {
-        console.error('Failed to fetch quotas:', error);
-        alert('ไม่สามารถดึงข้อมูลโควตาได้');
+        console.error('Failed to fetch data:', error);
+        alert('ไม่สามารถดึงข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
     } finally {
-        quotaLoader.style.display = 'none';
-    }
-}
-
-async function handleFormSubmit(event) {
-    event.preventDefault();
-    submitButton.disabled = true;
-    formLoader.style.display = 'block';
-    const formData = new FormData(leaveForm);
-    const params = new URLSearchParams({
-        func: 'submitLeave',
-        userId: USER_ID
-    });
-    for (const pair of formData.entries()) {
-        params.append(pair[0], pair[1]);
-    }
-    const url = `${GAS_URL}?${params.toString()}`;
-    try {
-        const response = await fetch(url);
-        const result = await response.json();
-        if (result.status === 'success') {
-            alert(result.message || 'ยื่นใบลาสำเร็จ!');
-            if(result.pdfUrl) {
-                liff.openWindow({ url: result.pdfUrl, external: true });
-            }
-            liff.closeWindow();
-        } else {
-            throw new Error(result.message || 'เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
-        }
-    } catch (error) {
-        console.error('Failed to submit leave request:', error);
-        alert('เกิดข้อผิดพลาดในการยื่นใบลา: ' + error.message);
-    } finally {
-        submitButton.disabled = false;
-        formLoader.style.display = 'none';
+        loader.style.display = 'none';
     }
 }
