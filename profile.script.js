@@ -1,5 +1,5 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzElcYNmEjvbzJJoJuDx4IxDiW_3kowVZVf9vk1ZzRKk17TdDyZk0HdPXuIs9QvJLl5/exec';
-const LIFF_ID = '2007730528-yaqgxXdq';
+const LIFF_ID = '2007730528-rw7ewjK7';
 
 const sickQuotaEl = document.getElementById('sick-quota');
 const personalQuotaEl = document.getElementById('personal-quota');
