@@ -1,4 +1,4 @@
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwLrx_FhTcm78u_KiI8B_0sJe37z3XuCAZSsuVfzOVj8HscH9eYXpzKRRaaNU2vp-Lv/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxo9QGUbRpZENs2qbBsUUsQCQ_Yf3LMfKNI3cY5-5gVTJqL2RgUzXlMcNlmLAHVDBcy/exec';
 const LIFF_ID = '2007730528-rw7ewjK7';
 
 // --- DOM Elements (แก้ไขใหม่) ---
