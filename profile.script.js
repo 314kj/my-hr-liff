@@ -1,4 +1,4 @@
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzElcYNmEjvbzJJoJuDx4IxDiW_3kowVZVf9vk1ZzRKk17TdDyZk0HdPXuIs9QvJLl5/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzasvMcrhbXpHam5yN4AS0ZIFXyE8_WmAL5WH6jicG01BDaXvpQ5zso3WOJDWCv-6Nq/exec';
 const LIFF_ID = '2007730528-rw7ewjK7';
 
 const displayName = document.getElementById('display-name');
