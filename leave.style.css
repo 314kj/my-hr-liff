@@ -50,9 +50,11 @@ body {
     border-radius: 10px;
     color: white;
 }
-.quota-item.sick { background-color: #17a2b8; }
-.quota-item.annual { background-color: #007bff; }
-.quota-item.personal { background-color: #6f42c1; }
+/* กำหนดสีใหม่ให้ชัดเจน */
+.quota-item.sick { background-color: #17a2b8; } /* สีเขียวน้ำทะเล */
+.quota-item.personal { background-color: #6f42c1; } /* สีม่วง */
+.quota-item.annual { background-color: #007bff; } /* สีน้ำเงิน */
+
 
 .quota-label {
     display: block;
