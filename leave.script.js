@@ -1,5 +1,5 @@
 // --- กรุณาใส่ค่าของคุณที่นี่ ---
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxJXQGC5KGNBtWoMgbcX7m60xlUlKjM-E0tHZs-xxtXXBx-pxnsF1dTeQBviYqXnYGo/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwLrx_FhTcm78u_KiI8B_0sJe37z3XuCAZSsuVfzOVj8HscH9eYXpzKRRaaNU2vp-Lv/exec';
 const LIFF_ID = '2007730528-yaqgxXdq';
 
 // --- DOM Elements (แก้ไขใหม่) ---
