@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+       <!DOCTYPE html>
     <html lang="th">
     <head>
         <meta charset="UTF-8">
@@ -19,19 +19,15 @@
                     <select id="year-select"></select>
                 </div>
     
-                <!-- ส่วนสรุปข้อมูล (อัปเกรด) -->
-                <div class="summary-grid">
+                <!-- ส่วนสรุปการมาทำงาน (ย้ายมาไว้บน) -->
+                <div class="summary-grid top">
+                    <div class="summary-card on-time">
+                        <div class="summary-title">ตรงเวลา (วัน)</div>
+                        <div id="on-time-days-summary" class="summary-value">0</div>
+                    </div>
                     <div class="summary-card late">
-                        <div class="summary-title">มาสายสะสม (นาที)</div>
-                        <div id="late-minutes-summary" class="summary-value">0</div>
-                    </div>
-                    <div class="summary-card sick">
-                        <div class="summary-title">ลาป่วยคงเหลือ (วัน)</div>
-                        <div id="sick-leave-summary" class="summary-value">0</div>
-                    </div>
-                     <div class="summary-card annual">
-                        <div class="summary-title">ลากิจ/พักร้อน (วัน)</div>
-                        <div id="annual-leave-summary" class="summary-value">0</div>
+                        <div class="summary-title">มาสาย (วัน)</div>
+                        <div id="late-days-summary" class="summary-value">0</div>
                     </div>
                 </div>
     
@@ -44,9 +40,25 @@
                 </div>
                 
                 <div class="legend">
-                    <div class="legend-item"><span class="legend-color on-time"></span>ตรงเวลา</div>
-                    <div class="legend-item"><span class="legend-color late"></span>มาสาย</div>
-                    <div class="legend-item"><span class="legend-color absent"></span>ขาดงาน</div>
+                    <div class="legend-item"><span class="legend-color on-time-legend"></span>ตรงเวลา</div>
+                    <div class="legend-item"><span class="legend-color late-legend"></span>มาสาย</div>
+                    <div class="legend-item"><span class="legend-color absent-legend"></span>ขาดงาน</div>
+                </div>
+
+                <!-- ส่วนสรุปวันลา (ย้ายมาไว้ล่าง) -->
+                 <div class="summary-grid bottom">
+                    <div class="summary-card sick">
+                        <div class="summary-title">ลาป่วยคงเหลือ (วัน)</div>
+                        <div id="sick-leave-summary" class="summary-value">0</div>
+                    </div>
+                     <div class="summary-card annual">
+                        <div class="summary-title">ลากิจ/พักร้อน (วัน)</div>
+                        <div id="annual-leave-summary" class="summary-value">0</div>
+                    </div>
+                     <div class="summary-card personal">
+                        <div class="summary-title">ลาอื่นๆ (วัน)</div>
+                        <div id="personal-leave-summary" class="summary-value">0</div>
+                    </div>
                 </div>
             </main>
         </div>
