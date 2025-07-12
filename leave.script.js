@@ -72,35 +72,35 @@ async function fetchLeaveQuotas() {
     }
 }
 
+// --- ฟังก์ชันจัดการการยื่นฟอร์ม (เวอร์ชันแก้ไข CORS) ---
 async function handleFormSubmit(event) {
     event.preventDefault(); // Prevent default form submission
     submitButton.disabled = true;
     formLoader.style.display = 'block';
 
     const formData = new FormData(leaveForm);
-    
-    // สร้าง URLSearchParams เพื่อส่งข้อมูลแบบ POST
     const params = new URLSearchParams();
+
     params.append('func', 'submitLeave');
     params.append('userId', USER_ID);
-    
-    // ดึงข้อมูลจากฟอร์มมาใส่ใน params
     for (const pair of formData.entries()) {
         params.append(pair[0], pair[1]);
     }
 
-    try {
-        // ส่งข้อมูลด้วยเมธอด POST
-        const response = await fetch(GAS_URL, {
-            method: 'POST',
-            body: params 
-        });
+    // สร้าง URL ใหม่พร้อมพารามิเตอร์ทั้งหมด
+    const fullUrl = `${GAS_URL}?${params.toString()}`;
 
-        // แปลงผลลัพธ์เป็น JSON
+    try {
+        // ส่งข้อมูลด้วยเมธอด GET ซึ่งไม่ติดปัญหา CORS
+        const response = await fetch(fullUrl);
         const result = await response.json();
 
         if (result.status === 'success') {
             alert(result.message || 'ยื่นใบลาสำเร็จ!');
+            // คุณสามารถเพิ่มลิงก์ PDF ได้ที่นี่ถ้าต้องการ
+            // if(result.pdfUrl) {
+            //     liff.openWindow({ url: result.pdfUrl, external: true });
+            // }
             liff.closeWindow();
         } else {
             throw new Error(result.message || 'เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
@@ -114,4 +114,3 @@ async function handleFormSubmit(event) {
         formLoader.style.display = 'none';
     }
 }
-
