@@ -1,6 +1,6 @@
 // --- กรุณาใส่ค่าของคุณที่นี่ ---
-const GAS_URL = 'ใส่_URL_ของเว็บแอป_ของคุณที่นี่';
-const LIFF_ID = 'ใส่_LIFF_ID_ใหม่_สำหรับหน้ายื่นใบลา_ที่นี่';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbycL45fzEDgzbN_d1Cb5DxFgZW8crVqImQpSPl0ZM-O73-_wqVuAJFkMLfXeD-QK1DL/exec';
+const LIFF_ID = '2007730528-yaqgxXdq';
 
 // --- DOM Elements ---
 const sickQuotaEl = document.getElementById('sick-quota');
