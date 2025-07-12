@@ -2,10 +2,10 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbycL45fzEDgzbN_d1Cb5DxFgZW8crVqImQpSPl0ZM-O73-_wqVuAJFkMLfXeD-QK1DL/exec';
 const LIFF_ID = '2007730528-yaqgxXdq';
 
-// --- DOM Elements ---
+// --- DOM Elements (แก้ไขใหม่) ---
 const sickQuotaEl = document.getElementById('sick-quota');
-const annualQuotaEl = document.getElementById('annual-quota');
-const personalQuotaEl = document.getElementById('personal-quota');
+const personalQuotaEl = document.getElementById('personal-quota'); // แก้ไขจาก annual
+const annualQuotaEl = document.getElementById('annual-quota'); // เพิ่มใหม่
 const quotaLoader = document.getElementById('quota-loader');
 const formLoader = document.getElementById('form-loader');
 const leaveForm = document.getElementById('leave-form');
@@ -57,9 +57,10 @@ async function fetchLeaveQuotas() {
 
         if (result.status === 'success') {
             const quotas = result.data;
+            // อัปเดตการแสดงผลให้ตรงกับ UI ใหม่
             sickQuotaEl.textContent = quotas.sick || 0;
-            annualQuotaEl.textContent = quotas.annual || 0;
             personalQuotaEl.textContent = quotas.personal || 0;
+            annualQuotaEl.textContent = quotas.annual || 0;
         } else {
             throw new Error(result.message);
         }
@@ -77,36 +78,40 @@ async function handleFormSubmit(event) {
     formLoader.style.display = 'block';
 
     const formData = new FormData(leaveForm);
-    const params = new URLSearchParams();
     
+    // สร้าง URLSearchParams เพื่อส่งข้อมูลแบบ POST
+    const params = new URLSearchParams();
     params.append('func', 'submitLeave');
     params.append('userId', USER_ID);
+    
+    // ดึงข้อมูลจากฟอร์มมาใส่ใน params
     for (const pair of formData.entries()) {
         params.append(pair[0], pair[1]);
     }
 
     try {
+        // ส่งข้อมูลด้วยเมธอด POST
         const response = await fetch(GAS_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString()
+            body: params 
         });
-        
-        // Note: GAS web apps with POST return HTML, so we check status not JSON
-        if (response.ok) {
-            alert('ยื่นใบลาสำเร็จ! กรุณารอการอนุมัติ');
+
+        // แปลงผลลัพธ์เป็น JSON
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            alert(result.message || 'ยื่นใบลาสำเร็จ!');
             liff.closeWindow();
         } else {
-            throw new Error('Server returned an error.');
+            throw new Error(result.message || 'เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
         }
 
     } catch (error) {
         console.error('Failed to submit leave request:', error);
-        alert('เกิดข้อผิดพลาดในการยื่นใบลา กรุณาลองใหม่อีกครั้ง');
+        alert('เกิดข้อผิดพลาดในการยื่นใบลา: ' + error.message);
     } finally {
         submitButton.disabled = false;
         formLoader.style.display = 'none';
     }
 }
+
