@@ -1,29 +1,28 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบลงเวลาทำงาน</title>
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div id="profile" class="profile-card">
-            <img id="profile-picture" src="https://via.placeholder.com/80" alt="Profile Picture">
-            <p id="display-name">กำลังโหลดข้อมูล...</p>
+        <div class="card">
+            <img id="profile-picture" src="https://placehold.co/80x80/EFEFEF/AAAAAA?text=?" alt="Profile Picture">
+            <p id="display-name">กำลังโหลด...</p>
         </div>
-
-        <div id="main-action" class="action-card">
-            <h2 id="action-title">ลงเวลาทำงาน</h2>
+        <div class="card">
             <p id="status-message">กรุณากดปุ่มเพื่อบันทึกเวลา</p>
-            <button id="checkin-button" class="action-button">📍 ยืนยันตำแหน่งและเช็คอิน</button>
+            <div id="loader" style="display: none;"></div>
+            <button id="action-button" class="action-button" disabled>รอข้อมูลผู้ใช้...</button>
         </div>
-
-        <div class="loader" id="loader" style="display: none;"></div>
-        <p class="footer">Powered by Your Company</p>
     </div>
 
+    <!-- LIFF SDK -->
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <!-- Link to the external JavaScript file -->
     <script src="script.js"></script>
 </body>
 </html>
